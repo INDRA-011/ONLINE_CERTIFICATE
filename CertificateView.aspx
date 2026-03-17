@@ -7,30 +7,40 @@
 
 <style>
 
-
     @media print {
-    body {
-        background: white;
-    }
+        body {
+            background: white;
+        }
 
-    .btn-back,
-    .btn-print {
-        display: none !important;
-    }
+        .btn-back,
+        .btn-print {
+            display: none !important;
+        }
 
-    .certificate-container {
-        box-shadow: none;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-    }
+        .certificate-container {
+            box-shadow: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
 
-    .certificate {
-        border: 2px solid black;
-        page-break-inside: avoid;
-        margin-bottom: 8px;
+        .certificate {
+            border: 2px solid black;
+            page-break-inside: avoid;
+            margin-bottom: 8px;
+            padding-top: 10px !important; /* balanced spacing */
+        }
+
+        .title-wrapper {
+            margin-top: 18px !important; /* FIXED: proper gap (not too big) */
+        }
+
+        .certificate img {
+            top: 5px !important;   /* slightly higher */
+            right: 25px !important;
+            width: 70px !important;
+        }
     }
-}
 
     body {
         background-color: #f4f4f4;
@@ -86,6 +96,11 @@
         letter-spacing: 4px;
     }
 
+    .title-wrapper {
+        text-align: center;
+        margin-top: 30px;
+    }
+
     .certificate-badge {
         text-align: center;
         margin: 15px;
@@ -130,6 +145,7 @@
         justify-content: space-between;
         margin-top: 20px;
     }
+
 </style>
 
 <div class="container">
@@ -150,7 +166,7 @@
 
            <img src="~/image/logo.png" alt="logo" runat="server" />
 
-            <div style="text-align:center;">
+            <div class="title-wrapper">
                 <div class="main-title">CERTIFICATE</div>
             </div>
 
