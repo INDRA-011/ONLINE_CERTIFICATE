@@ -24,20 +24,17 @@ namespace CertifyApp.Data
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                // Include CertificateNumber in the INSERT
-                string query = @"INSERT INTO Certificates 
-                (CertificateNumber, CertificateTitle, PersonName, IssueDate, WorkshopName, 
-                 WorkshopDate, TotalHours, DirectorName, DirectorTitle, CreatedDate)
-                VALUES 
-                (@CertificateNumber, @CertificateTitle, @PersonName, @IssueDate, @WorkshopName,
-                 @WorkshopDate, @TotalHours, @DirectorName, @DirectorTitle, @CreatedDate);
+                string query = @"INSERT INTO Certificates
+                (CertificateTitle, PersonName, IssueDate, WorkshopName, WorkshopDate,
+                 TotalHours, DirectorName, DirectorTitle, CreatedDate)
+                VALUES
+                (@CertificateTitle, @PersonName, @IssueDate, @WorkshopName, @WorkshopDate,
+                 @TotalHours, @DirectorName, @DirectorTitle, @CreatedDate);
                 
                 SELECT SCOPE_IDENTITY();";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    // Add CertificateNumber parameter
-                    cmd.Parameters.AddWithValue("@CertificateNumber", string.IsNullOrEmpty(cert.CertificateNumber) ? (object)DBNull.Value : cert.CertificateNumber);
                     cmd.Parameters.AddWithValue("@CertificateTitle", cert.CertificateTitle ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@PersonName", cert.PersonName ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@IssueDate", cert.IssueDate);
@@ -49,6 +46,7 @@ namespace CertifyApp.Data
                     cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
 
                     conn.Open();
+
                     return Convert.ToInt32(cmd.ExecuteScalar());
                 }
             }

@@ -94,11 +94,19 @@ namespace CertifyApp
             
             lblDirectorTitle.Text = cert.DirectorTitle ?? "Director of IT";
 
-           
+            lblPrincipalName.Text = "Shyam Sundar Shrestha";
+
+            lblPrincipalTitle.Text = "Principal";
+
+
             lblCertificateNumber.Text = cert.CertificateNumber ?? "CERT-" + cert.CertificateID.ToString("D6");
 
-            
-            lblIssueDate.Text = cert.IssueDate.ToString("dd-MM-yyyy");
+
+            lblIssueDate.Text = cert.IssueDate != DateTime.MinValue
+    ? cert.IssueDate.ToString("dd-MM-yyyy")
+    : DateTime.Now.ToString("dd-MM-yyyy");
+
+
         }
 
         private string GetFormattedDateWithSuffix(DateTime date)

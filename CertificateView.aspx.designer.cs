@@ -78,6 +78,24 @@ namespace CertifyApp
         protected global::System.Web.UI.WebControls.Label lblDirectorTitle;
 
         /// <summary>
+        /// lblPrincipalName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPrincipalName;
+
+        /// <summary>
+        /// lblPrincipalTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPrincipalTitle;
+
+        /// <summary>
         /// lblCertificateNumber control.
         /// </summary>
         /// <remarks>
@@ -94,5 +112,6 @@ namespace CertifyApp
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblIssueDate;
+
     }
 }

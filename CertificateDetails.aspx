@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CertificateDetails.aspx.cs" Inherits="CertifyApp.CertificateDetails" %>
+﻿<%@ Page Language="C#"  AutoEventWireup="true" CodeBehind="CertificateDetails.aspx.cs" Inherits="CertifyApp.CertificateDetails" %>
 
 <!DOCTYPE html>
 <head runat="server">
