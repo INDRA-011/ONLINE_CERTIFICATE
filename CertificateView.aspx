@@ -150,7 +150,7 @@
     .signature-img{
 max-height:60px;
 display:block;
-margin:0 auto -20px auto;
+margin:0 auto 3px auto;
 }
 
 </style>
