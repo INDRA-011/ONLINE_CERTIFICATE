@@ -95,6 +95,8 @@
     <Content Include="CertificateView.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="image\director-sign.png" />
+    <Content Include="image\principal-sign.png" />
     <Content Include="Login.aspx" />
     <Content Include="image\logo.png" />
     <Content Include="style.css" />

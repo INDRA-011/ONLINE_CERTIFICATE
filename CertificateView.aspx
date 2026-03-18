@@ -35,11 +35,11 @@
             margin-top: 18px !important; /* FIXED: proper gap (not too big) */
         }
 
-        .certificate img {
-            top: 5px !important;   /* slightly higher */
-            right: 25px !important;
-            width: 70px !important;
-        }
+        .certificate-logo {
+    top: 5px !important;
+    right: 25px !important;
+    width: 70px !important;
+}
     }
 
     body {
@@ -80,12 +80,12 @@
         margin-bottom: 8px;
     }
 
-    .certificate img {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        width: 80px;
-    }
+    .certificate-logo {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    width: 80px;
+}
 
     .main-title {
         text-align: center;
@@ -127,7 +127,7 @@
     .signature-section {
         display: flex;
         justify-content: space-between;
-        margin-top: 40px;
+        margin-top: 10px;
     }
 
     .signature-box {
@@ -137,7 +137,7 @@
 
     .signature-line {
         border-top: 2px solid black;
-        margin: 10px 0;
+        margin: 2px 0;
     }
 
     .certificate-footer {
@@ -145,6 +145,12 @@
         justify-content: space-between;
         margin-top: 20px;
     }
+
+    .signature-img{
+height:60px;
+display:block;
+margin:0 auto -2px auto;
+}
 
 </style>
 
@@ -164,7 +170,7 @@
     <div class="certificate-container">
         <div class="certificate">
 
-           <img src="~/image/logo.png" alt="logo" runat="server" />
+           <img src="~/image/logo.png" class="certificate-logo" alt="logo" runat="server" />
 
             <div class="title-wrapper">
                 <div class="main-title">CERTIFICATE</div>
@@ -195,38 +201,53 @@
             </div>
 
             <!-- Signatures -->
+
             <div class="signature-section">
 
-                <div class="signature-box">
-                    <div class="signature-line"></div>
-                    <asp:Label ID="lblDirectorName" runat="server" /><br />
-                    <asp:Label ID="lblDirectorTitle" runat="server" />
-                </div>
+    <div class="signature-box">
 
-                <div class="signature-box">
-                    <div class="signature-line"></div>
-                    <asp:Label ID="lblPrincipalName" runat="server" /><br />
-                    <asp:Label ID="lblPrincipalTitle" runat="server" />
-                </div>
+        <img src="image/director-sign.png" class="signature-img" />
 
-            </div>
+        <div class="signature-line"></div>
+
+        <asp:Label ID="lblDirectorName" runat="server" /><br />
+
+        <asp:Label ID="lblDirectorTitle" runat="server" />
+
+    </div>
+
+    <div class="signature-box">
+
+        <img src="image/principal-sign.png" class="signature-img" />
+
+        <div class="signature-line"></div>
+
+        <asp:Label ID="lblPrincipalName" runat="server" /><br />
+
+        <asp:Label ID="lblPrincipalTitle" runat="server" />
+
+    </div>
+
+</div>
 
             <!-- Footer -->
             <div class="certificate-footer">
-                <div>
-                    Certificate ID:
-                    <asp:Label ID="lblCertificateNumber" runat="server" />
-                </div>
 
-                <div>
-                    Date:
-                    <asp:Label ID="lblIssueDate" runat="server" />
-                </div>
-            </div>
+    <div>
+        Certificate ID:
+        <asp:Label ID="lblCertificateNumber" runat="server" />
+    </div>
+
+    <div>
+        Date:
+        <asp:Label ID="lblIssueDate" runat="server" />
+    </div>
+
+</div>
 
         </div>
     </div>
 
-</div>
+
 
 </asp:Content>
