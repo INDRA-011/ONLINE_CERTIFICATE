@@ -409,21 +409,7 @@
                             </div>
                         </div>
 
-                        <!-- Action Buttons -->
-                        <div class="action-buttons">
-                            <asp:Button ID="btnGeneratePDF" runat="server" 
-                                Text="Generate PDF Certificate" 
-                                CssClass="btn-action btn-generate" 
-                                OnClick="btnGeneratePDF_Click" />
-                            <asp:Button ID="btnPrintCertificate" runat="server" 
-                                Text="Print Certificate" 
-                                CssClass="btn-action btn-save" 
-                                OnClientClick="window.print(); return false;" />
-                            <asp:HyperLink ID="hlEditCertificate" runat="server" 
-                                CssClass="btn-action btn-edit">
-                                <i class="fas fa-edit me-2"></i>Edit Certificate
-                            </asp:HyperLink>
-                        </div>
+                        
                     </asp:Panel>
                 </ContentTemplate>
             </asp:UpdatePanel>
