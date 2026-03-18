@@ -127,18 +127,19 @@
     .signature-section {
         display: flex;
         justify-content: space-between;
-        margin-top: 10px;
+        margin-top: 30px;
     }
 
     .signature-box {
         width: 45%;
         text-align: center;
+        
     }
 
     .signature-line {
-        border-top: 2px solid black;
-        margin: 2px 0;
-    }
+    border-top: 2px solid black;
+    margin: -2px 0 4px 0;
+}
 
     .certificate-footer {
         display: flex;
@@ -147,9 +148,9 @@
     }
 
     .signature-img{
-height:60px;
+max-height:60px;
 display:block;
-margin:0 auto -2px auto;
+margin:0 auto -20px auto;
 }
 
 </style>
