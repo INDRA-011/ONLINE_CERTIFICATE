@@ -19,5 +19,6 @@ namespace CertifyApp.Models
         public string DirectorName { get; set; }
         public string DirectorTitle { get; set; }
         public DateTime? CreatedDate { get; set; }
+        public string CertificateType { get; set; }
     }
 }

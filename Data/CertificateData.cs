@@ -26,10 +26,10 @@ namespace CertifyApp.Data
             {
                 string query = @"INSERT INTO Certificates
                 (CertificateTitle, PersonName, IssueDate, WorkshopName, WorkshopDate,
-                 TotalHours, DirectorName, DirectorTitle, CreatedDate)
+                 TotalHours, DirectorName, DirectorTitle, CreatedDate, CertificateType)
                 VALUES
                 (@CertificateTitle, @PersonName, @IssueDate, @WorkshopName, @WorkshopDate,
-                 @TotalHours, @DirectorName, @DirectorTitle, @CreatedDate);
+                 @TotalHours, @DirectorName, @DirectorTitle, @CreatedDate, @CertificateType);
                 
                 SELECT SCOPE_IDENTITY();";
 
@@ -44,6 +44,7 @@ namespace CertifyApp.Data
                     cmd.Parameters.AddWithValue("@DirectorName", string.IsNullOrEmpty(cert.DirectorName) ? (object)DBNull.Value : cert.DirectorName);
                     cmd.Parameters.AddWithValue("@DirectorTitle", string.IsNullOrEmpty(cert.DirectorTitle) ? (object)DBNull.Value : cert.DirectorTitle);
                     cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@CertificateType", string.IsNullOrEmpty(cert.CertificateType) ? "Participation" : cert.CertificateType);
 
                     conn.Open();
 
@@ -59,10 +60,10 @@ namespace CertifyApp.Data
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query = @"SELECT CertificateID, CertificateNumber, CertificateTitle, PersonName, 
-                                        IssueDate, WorkshopName, WorkshopDate, TotalHours, 
-                                        DirectorName, DirectorTitle, CreatedDate
-                                 FROM Certificates 
-                                 ORDER BY CreatedDate DESC";
+                        IssueDate, WorkshopName, WorkshopDate, TotalHours, 
+                        DirectorName, DirectorTitle, CreatedDate, CertificateType
+                 FROM Certificates 
+                 ORDER BY CreatedDate DESC";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -88,10 +89,10 @@ namespace CertifyApp.Data
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query = @"SELECT CertificateID, CertificateNumber, CertificateTitle, PersonName, 
-                                IssueDate, WorkshopName, WorkshopDate, TotalHours, 
-                                DirectorName, DirectorTitle, CreatedDate
-                         FROM Certificates 
-                         WHERE CertificateID = @CertificateID";
+                IssueDate, WorkshopName, WorkshopDate, TotalHours, 
+                DirectorName, DirectorTitle, CreatedDate, CertificateType
+         FROM Certificates 
+         WHERE CertificateID = @CertificateID";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -214,6 +215,10 @@ namespace CertifyApp.Data
                 certificate.CreatedDate = null;
             else
                 certificate.CreatedDate = reader.GetDateTime(createdDateOrdinal);
+
+            // ADD THIS BLOCK
+            int certTypeOrdinal = reader.GetOrdinal("CertificateType");
+            certificate.CertificateType = reader.IsDBNull(certTypeOrdinal) ? "Participation" : reader.GetString(certTypeOrdinal);
 
             return certificate;
         }
