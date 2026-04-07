@@ -11,124 +11,169 @@ namespace CertifyApp
 {
 
 
-    public partial class CertificateView
+    public partial class BulkUpload
     {
 
         /// <summary>
-        /// btnEditLink control.
+        /// pnlSuccess control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor btnEditLink;
+        protected global::System.Web.UI.WebControls.Panel pnlSuccess;
 
         /// <summary>
-        /// btnDownloadPdf control.
+        /// lblSuccess control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDownloadPdf;
+        protected global::System.Web.UI.WebControls.Label lblSuccess;
 
         /// <summary>
-        /// lblCertificateTitle control.
+        /// pnlError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCertificateTitle;
+        protected global::System.Web.UI.WebControls.Panel pnlError;
 
         /// <summary>
-        /// lblPersonName control.
+        /// lblError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPersonName;
+        protected global::System.Web.UI.WebControls.Label lblError;
 
         /// <summary>
-        /// lblWorkshopName control.
+        /// pnlUpload control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblWorkshopName;
+        protected global::System.Web.UI.WebControls.Panel pnlUpload;
 
         /// <summary>
-        /// lblCompanyName control.
+        /// fileUpload control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCompanyName;
+        protected global::System.Web.UI.WebControls.FileUpload fileUpload;
 
         /// <summary>
-        /// lblWorkshopDate control.
+        /// btnDownloadTemplate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblWorkshopDate;
+        protected global::System.Web.UI.WebControls.LinkButton btnDownloadTemplate;
 
         /// <summary>
-        /// lblDirectorName control.
+        /// ddlCertType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDirectorName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCertType;
 
         /// <summary>
-        /// lblDirectorTitle control.
+        /// txtBulkTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDirectorTitle;
+        protected global::System.Web.UI.WebControls.TextBox txtBulkTitle;
 
         /// <summary>
-        /// lblPrincipalName control.
+        /// txtBulkDirector control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPrincipalName;
+        protected global::System.Web.UI.WebControls.TextBox txtBulkDirector;
 
         /// <summary>
-        /// lblPrincipalTitle control.
+        /// txtBulkDirectorTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPrincipalTitle;
+        protected global::System.Web.UI.WebControls.TextBox txtBulkDirectorTitle;
 
         /// <summary>
-        /// lblCertificateNumber control.
+        /// btnPreview control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCertificateNumber;
+        protected global::System.Web.UI.WebControls.Button btnPreview;
 
         /// <summary>
-        /// lblIssueDate control.
+        /// pnlPreview control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblIssueDate;
+        protected global::System.Web.UI.WebControls.Panel pnlPreview;
+
+        /// <summary>
+        /// lblValidCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblValidCount;
+
+        /// <summary>
+        /// lblInvalidCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblInvalidCount;
+
+        /// <summary>
+        /// btnBackToUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnBackToUpload;
+
+        /// <summary>
+        /// gvPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvPreview;
+
+        /// <summary>
+        /// btnGenerateAll control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGenerateAll;
     }
 }

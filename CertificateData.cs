@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -82,17 +82,17 @@ namespace CertifyApp.Data
                     FROM Certificates
                     WHERE 1=1
                     " + (string.IsNullOrEmpty(certType) ? "" : " AND CertificateType = @CertificateType")
-                      + (string.IsNullOrEmpty(batch) ? "" : " AND StudentBatch = @StudentBatch")
-                      + (fromDate.HasValue ? " AND IssueDate >= @FromDate" : "")
-                      + (toDate.HasValue ? " AND IssueDate <= @ToDate" : "")
+                      + (string.IsNullOrEmpty(batch)    ? "" : " AND StudentBatch = @StudentBatch")
+                      + (fromDate.HasValue              ? " AND IssueDate >= @FromDate" : "")
+                      + (toDate.HasValue                ? " AND IssueDate <= @ToDate"   : "")
                       + " ORDER BY CreatedDate DESC";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     if (!string.IsNullOrEmpty(certType)) cmd.Parameters.AddWithValue("@CertificateType", certType);
-                    if (!string.IsNullOrEmpty(batch)) cmd.Parameters.AddWithValue("@StudentBatch", batch);
-                    if (fromDate.HasValue) cmd.Parameters.AddWithValue("@FromDate", fromDate.Value);
-                    if (toDate.HasValue) cmd.Parameters.AddWithValue("@ToDate", toDate.Value);
+                    if (!string.IsNullOrEmpty(batch))    cmd.Parameters.AddWithValue("@StudentBatch",    batch);
+                    if (fromDate.HasValue)               cmd.Parameters.AddWithValue("@FromDate",        fromDate.Value);
+                    if (toDate.HasValue)                 cmd.Parameters.AddWithValue("@ToDate",          toDate.Value);
 
                     conn.Open();
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -207,7 +207,7 @@ namespace CertifyApp.Data
                 string query = "UPDATE Certificates SET CertificateNumber = @CertificateNumber WHERE CertificateID = @CertificateID";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@CertificateID", certificateId);
+                    cmd.Parameters.AddWithValue("@CertificateID",     certificateId);
                     cmd.Parameters.AddWithValue("@CertificateNumber", certificateNumber ?? (object)DBNull.Value);
                     conn.Open();
                     return cmd.ExecuteNonQuery() > 0;
@@ -238,17 +238,17 @@ namespace CertifyApp.Data
         private void AddCertificateParams(SqlCommand cmd, Certificate cert)
         {
             cmd.Parameters.AddWithValue("@CertificateTitle", cert.CertificateTitle ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("@PersonName", cert.PersonName ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("@IssueDate", cert.IssueDate);
-            cmd.Parameters.AddWithValue("@WorkshopName", string.IsNullOrEmpty(cert.WorkshopName) ? (object)DBNull.Value : cert.WorkshopName);
-            cmd.Parameters.AddWithValue("@WorkshopDate", cert.WorkshopDate.HasValue ? (object)cert.WorkshopDate.Value : DBNull.Value);
-            cmd.Parameters.AddWithValue("@TotalHours", cert.TotalHours.HasValue ? (object)cert.TotalHours.Value : DBNull.Value);
-            cmd.Parameters.AddWithValue("@DirectorName", string.IsNullOrEmpty(cert.DirectorName) ? (object)DBNull.Value : cert.DirectorName);
-            cmd.Parameters.AddWithValue("@DirectorTitle", string.IsNullOrEmpty(cert.DirectorTitle) ? (object)DBNull.Value : cert.DirectorTitle);
-            cmd.Parameters.AddWithValue("@CreatedDate", cert.CreatedDate ?? (object)DateTime.Now);
-            cmd.Parameters.AddWithValue("@CertificateType", string.IsNullOrEmpty(cert.CertificateType) ? "Participation" : cert.CertificateType);
-            cmd.Parameters.AddWithValue("@StudentEmail", string.IsNullOrEmpty(cert.StudentEmail) ? (object)DBNull.Value : cert.StudentEmail);
-            cmd.Parameters.AddWithValue("@StudentBatch", string.IsNullOrEmpty(cert.StudentBatch) ? (object)DBNull.Value : cert.StudentBatch);
+            cmd.Parameters.AddWithValue("@PersonName",       cert.PersonName       ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@IssueDate",        cert.IssueDate);
+            cmd.Parameters.AddWithValue("@WorkshopName",     string.IsNullOrEmpty(cert.WorkshopName) ? (object)DBNull.Value : cert.WorkshopName);
+            cmd.Parameters.AddWithValue("@WorkshopDate",     cert.WorkshopDate.HasValue ? (object)cert.WorkshopDate.Value : DBNull.Value);
+            cmd.Parameters.AddWithValue("@TotalHours",       cert.TotalHours.HasValue   ? (object)cert.TotalHours.Value   : DBNull.Value);
+            cmd.Parameters.AddWithValue("@DirectorName",     string.IsNullOrEmpty(cert.DirectorName)  ? (object)DBNull.Value : cert.DirectorName);
+            cmd.Parameters.AddWithValue("@DirectorTitle",    string.IsNullOrEmpty(cert.DirectorTitle) ? (object)DBNull.Value : cert.DirectorTitle);
+            cmd.Parameters.AddWithValue("@CreatedDate",      cert.CreatedDate ?? (object)DateTime.Now);
+            cmd.Parameters.AddWithValue("@CertificateType",  string.IsNullOrEmpty(cert.CertificateType) ? "Participation" : cert.CertificateType);
+            cmd.Parameters.AddWithValue("@StudentEmail",     string.IsNullOrEmpty(cert.StudentEmail) ? (object)DBNull.Value : cert.StudentEmail);
+            cmd.Parameters.AddWithValue("@StudentBatch",     string.IsNullOrEmpty(cert.StudentBatch) ? (object)DBNull.Value : cert.StudentBatch);
         }
 
         private string GenerateCertificateNumber(int certificateId, DateTime issueDate)
@@ -260,20 +260,20 @@ namespace CertifyApp.Data
         {
             return new Certificate
             {
-                CertificateID = r.IsDBNull(r.GetOrdinal("CertificateID")) ? 0 : r.GetInt32(r.GetOrdinal("CertificateID")),
+                CertificateID     = r.IsDBNull(r.GetOrdinal("CertificateID"))     ? 0    : r.GetInt32(r.GetOrdinal("CertificateID")),
                 CertificateNumber = r.IsDBNull(r.GetOrdinal("CertificateNumber")) ? null : r.GetString(r.GetOrdinal("CertificateNumber")),
-                CertificateTitle = r.IsDBNull(r.GetOrdinal("CertificateTitle")) ? "" : r.GetString(r.GetOrdinal("CertificateTitle")),
-                PersonName = r.IsDBNull(r.GetOrdinal("PersonName")) ? "" : r.GetString(r.GetOrdinal("PersonName")),
-                IssueDate = r.IsDBNull(r.GetOrdinal("IssueDate")) ? DateTime.Now : r.GetDateTime(r.GetOrdinal("IssueDate")),
-                WorkshopName = r.IsDBNull(r.GetOrdinal("WorkshopName")) ? null : r.GetString(r.GetOrdinal("WorkshopName")),
-                WorkshopDate = r.IsDBNull(r.GetOrdinal("WorkshopDate")) ? (DateTime?)null : r.GetDateTime(r.GetOrdinal("WorkshopDate")),
-                TotalHours = r.IsDBNull(r.GetOrdinal("TotalHours")) ? (int?)null : r.GetInt32(r.GetOrdinal("TotalHours")),
-                DirectorName = r.IsDBNull(r.GetOrdinal("DirectorName")) ? null : r.GetString(r.GetOrdinal("DirectorName")),
-                DirectorTitle = r.IsDBNull(r.GetOrdinal("DirectorTitle")) ? null : r.GetString(r.GetOrdinal("DirectorTitle")),
-                CreatedDate = r.IsDBNull(r.GetOrdinal("CreatedDate")) ? (DateTime?)null : r.GetDateTime(r.GetOrdinal("CreatedDate")),
-                CertificateType = r.IsDBNull(r.GetOrdinal("CertificateType")) ? "Participation" : r.GetString(r.GetOrdinal("CertificateType")),
-                StudentEmail = r.IsDBNull(r.GetOrdinal("StudentEmail")) ? null : r.GetString(r.GetOrdinal("StudentEmail")),
-                StudentBatch = r.IsDBNull(r.GetOrdinal("StudentBatch")) ? null : r.GetString(r.GetOrdinal("StudentBatch")),
+                CertificateTitle  = r.IsDBNull(r.GetOrdinal("CertificateTitle"))  ? ""   : r.GetString(r.GetOrdinal("CertificateTitle")),
+                PersonName        = r.IsDBNull(r.GetOrdinal("PersonName"))        ? ""   : r.GetString(r.GetOrdinal("PersonName")),
+                IssueDate         = r.IsDBNull(r.GetOrdinal("IssueDate"))         ? DateTime.Now : r.GetDateTime(r.GetOrdinal("IssueDate")),
+                WorkshopName      = r.IsDBNull(r.GetOrdinal("WorkshopName"))      ? null : r.GetString(r.GetOrdinal("WorkshopName")),
+                WorkshopDate      = r.IsDBNull(r.GetOrdinal("WorkshopDate"))      ? (DateTime?)null : r.GetDateTime(r.GetOrdinal("WorkshopDate")),
+                TotalHours        = r.IsDBNull(r.GetOrdinal("TotalHours"))        ? (int?)null : r.GetInt32(r.GetOrdinal("TotalHours")),
+                DirectorName      = r.IsDBNull(r.GetOrdinal("DirectorName"))      ? null : r.GetString(r.GetOrdinal("DirectorName")),
+                DirectorTitle     = r.IsDBNull(r.GetOrdinal("DirectorTitle"))     ? null : r.GetString(r.GetOrdinal("DirectorTitle")),
+                CreatedDate       = r.IsDBNull(r.GetOrdinal("CreatedDate"))       ? (DateTime?)null : r.GetDateTime(r.GetOrdinal("CreatedDate")),
+                CertificateType   = r.IsDBNull(r.GetOrdinal("CertificateType"))   ? "Participation" : r.GetString(r.GetOrdinal("CertificateType")),
+                StudentEmail      = r.IsDBNull(r.GetOrdinal("StudentEmail"))      ? null : r.GetString(r.GetOrdinal("StudentEmail")),
+                StudentBatch      = r.IsDBNull(r.GetOrdinal("StudentBatch"))      ? null : r.GetString(r.GetOrdinal("StudentBatch")),
             };
         }
     }
