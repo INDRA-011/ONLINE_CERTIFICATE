@@ -204,7 +204,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Student Email</label>
+                    <label class="form-label">Participant Email</label>
                     <asp:TextBox ID="txtStudentEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="student@example.com" />
                 </div>
 

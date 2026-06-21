@@ -135,6 +135,7 @@ namespace CertifyApp.Data
         public int GetTotalCount() => GetScalar("SELECT COUNT(*) FROM Certificates");
         public int GetTodayCount() => GetScalar("SELECT COUNT(*) FROM Certificates WHERE CAST(CreatedDate AS DATE) = CAST(GETDATE() AS DATE)");
         public int GetCountByType(string type) => GetScalar("SELECT COUNT(*) FROM Certificates WHERE CertificateType = @p0", type);
+        public int GetUniqueRecipientCount() => GetScalar("SELECT COUNT(DISTINCT PersonName) FROM Certificates");
 
         private int GetScalar(string query, string param = null)
         {

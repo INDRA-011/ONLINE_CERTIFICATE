@@ -69,15 +69,6 @@ namespace CertifyApp
         protected global::System.Web.UI.WebControls.DropDownList ddlFilterType;
 
         /// <summary>
-        /// ddlFilterBatch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFilterBatch;
-
-        /// <summary>
         /// txtFromDate control.
         /// </summary>
         /// <remarks>

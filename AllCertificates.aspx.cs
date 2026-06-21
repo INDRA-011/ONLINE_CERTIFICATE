@@ -23,30 +23,20 @@ namespace CertifyApp
                 if (Request.QueryString["type"] != null)
                     ddlFilterType.SelectedValue = Request.QueryString["type"];
 
-                LoadBatches();
                 LoadCertificates();
             }
-        }
-
-        private void LoadBatches()
-        {
-            ddlFilterBatch.Items.Clear();
-            ddlFilterBatch.Items.Add(new ListItem("All Batches", ""));
-            foreach (string batch in data.GetDistinctBatches())
-                ddlFilterBatch.Items.Add(new ListItem(batch, batch));
         }
 
         private void LoadCertificates()
         {
             string type = ddlFilterType.SelectedValue;
-            string batch = ddlFilterBatch.SelectedValue;
             DateTime? from = DateTime.TryParse(txtFromDate.Text, out var fd) ? fd : (DateTime?)null;
             DateTime? to = DateTime.TryParse(txtToDate.Text, out var td) ? td : (DateTime?)null;
 
             var certs = data.GetAllCertificates(
-                string.IsNullOrEmpty(type) ? null : type,
-                string.IsNullOrEmpty(batch) ? null : batch,
-                from, to);
+    string.IsNullOrEmpty(type) ? null : type,
+    null,
+    from, to);
 
             lblCount.Text = certs.Count.ToString();
 
@@ -72,7 +62,6 @@ namespace CertifyApp
         protected void btnReset_Click(object sender, EventArgs e)
         {
             ddlFilterType.SelectedIndex = 0;
-            ddlFilterBatch.SelectedIndex = 0;
             txtFromDate.Text = "";
             txtToDate.Text = "";
             gvCertificates.PageIndex = 0;

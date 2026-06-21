@@ -55,7 +55,7 @@
 
     /* PREVIEW TABLE */
     .preview-table { width:100%; border-collapse:collapse; font-size:.83rem; }
-    .preview-table thead th { background:#f8f5ef; color:#6b7280; font-size:.7rem; text-transform:uppercase; letter-spacing:.8px; font-weight:600; padding:9px 14px; border-bottom:1px solid rgba(15,32,68,.07); }
+    .preview-table thead th { background:#f8f5ef; color:#6b7280; font-size:.7rem; text-transform:uppercase; letter-spacing:.8px; font-weight:600; padding:9px 14px; border-bottom:1px solid rgba(15,32,68,.07); white-space:nowrap; }
     .preview-table tbody tr { border-bottom:1px solid rgba(15,32,68,.05); }
     .preview-table tbody td { padding:9px 14px; vertical-align:middle; }
     .row-valid   { background:#f0fdf4; }
@@ -70,6 +70,13 @@
     .btn-outline-cert:hover { border-color:#0f2044; background:rgba(15,32,68,.04); }
 
     .alert { border-radius:8px; font-size:.86rem; padding:12px 16px; margin-bottom:16px; }
+
+    /* NOTE BOX */
+    .note-box {
+        background:#fffbf0; border:1px solid rgba(201,168,76,.3); border-radius:8px;
+        padding:12px 16px; margin-top:12px; font-size:.81rem; color:#92651a;
+    }
+    .note-box i { margin-right:6px; }
 </style>
 </asp:Content>
 
@@ -98,7 +105,7 @@
     <div class="upload-card">
         <div class="upload-card-header">
             <i class="fas fa-upload"></i>
-            <h4>Step 1 — Upload CSV File</h4>
+            <h4>Step 1 &mdash; Upload CSV File</h4>
         </div>
         <div class="upload-card-body">
 
@@ -113,12 +120,18 @@
             <div class="template-box mt-3">
                 <i class="fas fa-info-circle"></i>
                 <div>
-                    <p><strong>Required CSV columns:</strong></p>
-                    <p style="margin-top:4px;">
-                        <code>PersonName</code>, <code>StudentEmail</code>, <code>WorkshopName</code>,
-                        <code>IssueDate</code> (yyyy-MM-dd), <code>StudentBatch</code> (optional)
-                    </p>
+                    <p><strong>Required CSV columns (in this order):</strong></p>
                     <p style="margin-top:6px;">
+                        <code>ID</code>,
+                        <code>Certificate Title</code>,
+                        <code>Student Name</code>,
+                        <code>Email Address</code>,
+                        <code>Issue Date</code> (M/d/yyyy),
+                        <code>Workshop/Event Name</code>,
+                        <code>Event Date</code> (M/d/yyyy, optional),
+                        <code>Total Hour</code> (optional)
+                    </p>
+                    <p style="margin-top:8px;">
                         <asp:LinkButton ID="btnDownloadTemplate" runat="server" CssClass="template-link"
                             OnClick="btnDownloadTemplate_Click" CausesValidation="false">
                             <i class="fas fa-download me-1"></i> Download CSV Template
@@ -127,7 +140,13 @@
                 </div>
             </div>
 
-            <!-- Shared settings for all certificates -->
+            <div class="note-box">
+                <i class="fas fa-lightbulb"></i>
+                <strong>Note:</strong> Each row can have its own <strong>Certificate Title</strong> &mdash;
+                allowing different certificate titles in one upload batch.
+            </div>
+
+            <!-- Shared settings (type, director) — title now comes from CSV per row -->
             <hr style="margin:20px 0; border-color:rgba(15,32,68,.08);" />
             <h6 style="font-family:'Playfair Display',serif; color:#0f2044; margin-bottom:16px;">Shared Certificate Settings</h6>
             <div class="row g-3">
@@ -139,10 +158,6 @@
                         <asp:ListItem Value="Academic">Academic</asp:ListItem>
                         <asp:ListItem Value="Completion">Completion</asp:ListItem>
                     </asp:DropDownList>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Certificate Title</label>
-                    <asp:TextBox ID="txtBulkTitle" runat="server" CssClass="form-control" placeholder="e.g. Certificate of Participation" />
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Authorized By</label>
@@ -168,7 +183,7 @@
     <div class="upload-card">
         <div class="upload-card-header">
             <i class="fas fa-table"></i>
-            <h4>Step 2 — Review & Confirm</h4>
+            <h4>Step 2 &mdash; Review &amp; Confirm</h4>
         </div>
         <div class="upload-card-body">
 
@@ -186,14 +201,16 @@
                     AutoGenerateColumns="False" GridLines="None" CssClass="preview-table"
                     OnRowDataBound="gvPreview_RowDataBound">
                     <Columns>
-                        <asp:BoundField DataField="Row"          HeaderText="#"          />
-                        <asp:BoundField DataField="PersonName"   HeaderText="Name"       />
-                        <asp:BoundField DataField="StudentEmail" HeaderText="Email"      />
-                        <asp:BoundField DataField="WorkshopName" HeaderText="Event"      />
-                        <asp:BoundField DataField="IssueDate"    HeaderText="Date"       />
-                        <asp:BoundField DataField="StudentBatch" HeaderText="Batch"      />
-                        <asp:BoundField DataField="Status"       HeaderText="Status"     />
-                        <asp:BoundField DataField="Notes"        HeaderText="Notes"      />
+                        <asp:BoundField DataField="Row"               HeaderText="#"            />
+                        <asp:BoundField DataField="CertificateTitle"  HeaderText="Cert Title"   />
+                        <asp:BoundField DataField="PersonName"        HeaderText="Student Name" />
+                        <asp:BoundField DataField="EmailAddress"      HeaderText="Email"        />
+                        <asp:BoundField DataField="IssueDate"         HeaderText="Issue Date"   />
+                        <asp:BoundField DataField="WorkshopName"      HeaderText="Event"        />
+                        <asp:BoundField DataField="EventDate"         HeaderText="Event Date"   />
+                        <asp:BoundField DataField="TotalHour"         HeaderText="Hours"        />
+                        <asp:BoundField DataField="Status"            HeaderText="Status"       />
+                        <asp:BoundField DataField="Notes"             HeaderText="Notes"        />
                     </Columns>
                 </asp:GridView>
             </div>

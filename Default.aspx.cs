@@ -8,7 +8,7 @@ namespace CertifyApp
     {
         private CertificateData data = new CertificateData();
 
-        // Properties used by JS in the view
+        // Properties used by JS in the view for bar animation
         public int TotalCount { get; private set; }
         public int ParticipationCount { get; private set; }
         public int AchievementCount { get; private set; }
@@ -22,7 +22,6 @@ namespace CertifyApp
                 Response.Redirect("~/Login.aspx");
                 return;
             }
-
             if (!IsPostBack)
             {
                 LoadStats();
@@ -39,23 +38,22 @@ namespace CertifyApp
             AcademicCount = data.GetCountByType("Academic");
             CompletionCount = data.GetCountByType("Completion");
 
+            // ── Overview cards ────────────────────────────────
             lblTotal.Text = TotalCount.ToString();
             lblToday.Text = todayCount.ToString();
-            lblParticipation.Text = ParticipationCount.ToString();
-            lblAcademic.Text = AcademicCount.ToString();
+            lblRecipients.Text = data.GetUniqueRecipientCount().ToString();
 
-            lblBarParticipation.Text = ParticipationCount.ToString();
-            lblBarAchievement.Text = AchievementCount.ToString();
-            lblBarAcademic.Text = AcademicCount.ToString();
-            lblBarCompletion.Text = CompletionCount.ToString();
+            // ── Type breakdown cards ──────────────────────────
+            lblParticipation.Text = ParticipationCount.ToString();
+            lblCompletion.Text = CompletionCount.ToString();
+            lblAchievement.Text = AchievementCount.ToString();
+            lblAcademic.Text = AcademicCount.ToString();
         }
 
         private void LoadRecentCertificates()
         {
-            // Load latest 8 for the dashboard table
             var all = data.GetAllCertificates();
             var recent = all.Count > 8 ? all.GetRange(0, 8) : all;
-
             gvRecent.DataSource = recent;
             gvRecent.DataBind();
         }

@@ -33,6 +33,15 @@ namespace CertifyApp
         protected global::System.Web.UI.WebControls.Label lblToday;
 
         /// <summary>
+        /// lblRecipients control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblRecipients;
+
+        /// <summary>
         /// lblParticipation control.
         /// </summary>
         /// <remarks>
@@ -40,6 +49,24 @@ namespace CertifyApp
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblParticipation;
+
+        /// <summary>
+        /// lblCompletion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCompletion;
+
+        /// <summary>
+        /// lblAchievement control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAchievement;
 
         /// <summary>
         /// lblAcademic control.
@@ -58,41 +85,5 @@ namespace CertifyApp
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvRecent;
-
-        /// <summary>
-        /// lblBarParticipation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBarParticipation;
-
-        /// <summary>
-        /// lblBarAchievement control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBarAchievement;
-
-        /// <summary>
-        /// lblBarAcademic control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBarAcademic;
-
-        /// <summary>
-        /// lblBarCompletion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBarCompletion;
     }
 }

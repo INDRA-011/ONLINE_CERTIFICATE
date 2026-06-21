@@ -2,33 +2,118 @@
 
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
 <style>
-    /* ── STAT CARDS ───────────────────────────────────────── */
-    .stat-card {
-        background: #fff;
-        border-radius: 10px;
-        padding: 22px 24px;
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        box-shadow: 0 1px 6px rgba(15,32,68,.07);
-        border: 1px solid rgba(15,32,68,.06);
-        transition: box-shadow .2s, transform .2s;
+    /* ── OVERVIEW STAT CARDS (top row) ───────────────────── */
+    .stat-grid-top {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 12px;
     }
-    .stat-card:hover { box-shadow: 0 4px 18px rgba(15,32,68,.12); transform: translateY(-2px); }
+    .stat-grid-types {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+    .stat-card {
+    background: #fff;
+    border: 1px solid rgba(15,32,68,.14);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: box-shadow .2s, transform .2s;
+}
+.stat-card:hover { box-shadow: 0 6px 22px rgba(15,32,68,.10); transform: translateY(-2px); }
+.stat-card.navy  { background: #f6f8fc; }
+.stat-card.gold  { background: #fdf9f0; }
+.stat-card.teal  { background: #f0faf6; }
+    .stat-card:hover {
+        box-shadow: 0 4px 18px rgba(15,32,68,.10);
+        transform: translateY(-2px);
+    }
     .stat-icon {
-        width: 52px; height: 52px;
-        border-radius: 12px;
+        width: 44px; height: 44px;
+        border-radius: 10px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         flex-shrink: 0;
     }
-    .stat-icon.navy    { background: rgba(15,32,68,.08);  color: #0f2044; }
-    .stat-icon.gold    { background: rgba(201,168,76,.12); color: #c9a84c; }
-    .stat-icon.green   { background: rgba(16,185,129,.1);  color: #059669; }
-    .stat-icon.purple  { background: rgba(124,58,237,.1);  color: #7c3aed; }
-    .stat-icon.orange  { background: rgba(234,88,12,.1);   color: #ea580c; }
-    .stat-label { font-size: .78rem; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; }
-    .stat-value { font-family: 'Playfair Display', serif; font-size: 2rem; color: #0f2044; line-height: 1.1; }
+    .stat-icon.navy   { background: rgba(15,32,68,.08);   color: #0f2044; }
+    .stat-icon.gold   { background: rgba(201,168,76,.13); color: #c9a84c; }
+    .stat-icon.teal   { background: rgba(15,110,86,.09);  color: #0f6e56; }
+    .stat-label { font-size: .72rem; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 6px; }
+.stat-value { font-family: 'Playfair Display', serif; font-size: 2rem; color: #0f2044; line-height: 1; margin-bottom: 4px; }
+.stat-sub   { font-size: .72rem; color: #9ca3af; margin-top: 0; }
+
+    /* ── TYPE CARDS (2x2 grid) ────────────────────────────── */
+    .type-card {
+    background: #fff;
+    border: 1px solid rgba(15,32,68,.14);
+    border-radius: 12px;
+    padding: 18px 20px;
+    transition: box-shadow .2s, transform .2s;
+}
+.type-card:hover { box-shadow: 0 6px 22px rgba(15,32,68,.10); transform: translateY(-2px); }
+.type-card.blue   { background: #f5f9ff; }
+.type-card.green  { background: #f0fdf8; }
+.type-card.amber  { background: #fffbf0; }
+.type-card.purple { background: #faf8ff; }
+    .type-card:hover {
+        box-shadow: 0 4px 16px rgba(15,32,68,.09);
+        transform: translateY(-2px);
+    }
+    .type-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .type-card-name {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: .83rem;
+        font-weight: 600;
+        color: #374151;
+    }
+    .type-dot {
+        width: 9px; height: 9px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+    .type-card-count {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        color: #0f2044;
+        line-height: 1;
+    }
+    .type-bar-wrap {
+        background: #f3f4f6;
+        border-radius: 4px;
+        height: 7px;
+        overflow: hidden;
+    }
+    .type-bar {
+        height: 100%;
+        border-radius: 4px;
+        transition: width .7s cubic-bezier(.4,0,.2,1);
+    }
+    .bar-participation { background: #3b82f6; }
+    .bar-completion    { background: #10b981; }
+    .bar-achievement   { background: #f59e0b; }
+    .bar-academic      { background: #7c3aed; }
+
+    .section-eyebrow {
+        font-size: .7rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #9ca3af;
+        font-weight: 600;
+        margin-bottom: 10px;
+        margin-top: 0;
+    }
 
     /* ── QUICK ACTION CARDS ───────────────────────────────── */
     .action-card {
@@ -132,18 +217,6 @@
         transition: background .18s;
     }
     .btn-view-sm:hover { background: #c9a84c; color: #fff; }
-
-    /* ── TYPE BREAKDOWN ───────────────────────────────────── */
-    .type-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-    .type-row:last-child { margin-bottom: 0; }
-    .type-row-label { width: 110px; font-size: .83rem; color: #374151; font-weight: 600; }
-    .type-bar-wrap { flex: 1; background: #f3f4f6; border-radius: 6px; height: 10px; overflow: hidden; }
-    .type-bar { height: 100%; border-radius: 6px; transition: width .6s ease; }
-    .bar-participation { background: #3b82f6; }
-    .bar-achievement   { background: #f59e0b; }
-    .bar-academic      { background: #10b981; }
-    .bar-completion    { background: #8b5cf6; }
-    .type-row-count { font-size: .8rem; color: #6b7280; width: 36px; text-align: right; }
 </style>
 </asp:Content>
 
@@ -156,47 +229,106 @@
             <span>Dashboard</span>
         </div>
         <h1>Dashboard</h1>
-        <p>Welcome back, Administrator — here's an overview of your certificate system.</p>
+        <p>Welcome back, Administrator &mdash; here&rsquo;s an overview of your certificate system.</p>
     </div>
 
-    <!-- STAT CARDS -->
-    <div class="row g-3 mb-4">
-        <div class="col-sm-6 col-xl-3">
-            <div class="stat-card">
-                <div class="stat-icon navy"><i class="fas fa-certificate"></i></div>
-                <div>
-                    <div class="stat-label">Total Certificates</div>
-                    <div class="stat-value"><asp:Label ID="lblTotal" runat="server" Text="0" /></div>
-                </div>
+    <!-- OVERVIEW STAT CARDS -->
+    <p class="section-eyebrow">Overview</p>
+    <div class="stat-grid-top mb-1">
+
+        <div class="stat-card">
+            <div class="stat-icon navy"><i class="fas fa-certificate"></i></div>
+            <div>
+                <div class="stat-label">Total Certificates</div>
+                <div class="stat-value"><asp:Label ID="lblTotal" runat="server" Text="0" /></div>
+                <div class="stat-sub">all time</div>
             </div>
         </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="stat-card">
-                <div class="stat-icon gold"><i class="fas fa-calendar-day"></i></div>
-                <div>
-                    <div class="stat-label">Issued Today</div>
-                    <div class="stat-value"><asp:Label ID="lblToday" runat="server" Text="0" /></div>
-                </div>
+
+        <div class="stat-card">
+            <div class="stat-icon gold"><i class="fas fa-calendar-day"></i></div>
+            <div>
+                <div class="stat-label">Issued Today</div>
+                <div class="stat-value"><asp:Label ID="lblToday" runat="server" Text="0" /></div>
+                <div class="stat-sub">as of today</div>
             </div>
         </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="stat-card">
-                <div class="stat-icon green"><i class="fas fa-user-check"></i></div>
-                <div>
-                    <div class="stat-label">Participation</div>
-                    <div class="stat-value"><asp:Label ID="lblParticipation" runat="server" Text="0" /></div>
-                </div>
+
+        <div class="stat-card">
+            <div class="stat-icon teal"><i class="fas fa-users"></i></div>
+            <div>
+                <div class="stat-label">Recipients</div>
+                <div class="stat-value"><asp:Label ID="lblRecipients" runat="server" Text="0" /></div>
+                <div class="stat-sub">unique students</div>
             </div>
         </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="stat-card">
-                <div class="stat-icon purple"><i class="fas fa-graduation-cap"></i></div>
-                <div>
-                    <div class="stat-label">Academic</div>
-                    <div class="stat-value"><asp:Label ID="lblAcademic" runat="server" Text="0" /></div>
+
+    </div>
+
+    <!-- TYPE BREAKDOWN CARDS (2x2) -->
+    <p class="section-eyebrow mt-3">By Certificate Type</p>
+    <div class="stat-grid-types">
+
+        <div class="type-card">
+            <div class="type-card-top">
+                <div class="type-card-name">
+                    <span class="type-dot" style="background:#3b82f6;"></span>
+                    Participation
+                </div>
+                <div class="type-card-count">
+                    <asp:Label ID="lblParticipation" runat="server" Text="0" />
                 </div>
             </div>
+            <div class="type-bar-wrap">
+                <div class="type-bar bar-participation" id="barParticipation" style="width:0%"></div>
+            </div>
         </div>
+
+        <div class="type-card">
+            <div class="type-card-top">
+                <div class="type-card-name">
+                    <span class="type-dot" style="background:#10b981;"></span>
+                    Completion
+                </div>
+                <div class="type-card-count">
+                    <asp:Label ID="lblCompletion" runat="server" Text="0" />
+                </div>
+            </div>
+            <div class="type-bar-wrap">
+                <div class="type-bar bar-completion" id="barCompletion" style="width:0%"></div>
+            </div>
+        </div>
+
+        <div class="type-card">
+            <div class="type-card-top">
+                <div class="type-card-name">
+                    <span class="type-dot" style="background:#f59e0b;"></span>
+                    Achievement
+                </div>
+                <div class="type-card-count">
+                    <asp:Label ID="lblAchievement" runat="server" Text="0" />
+                </div>
+            </div>
+            <div class="type-bar-wrap">
+                <div class="type-bar bar-achievement" id="barAchievement" style="width:0%"></div>
+            </div>
+        </div>
+
+        <div class="type-card">
+            <div class="type-card-top">
+                <div class="type-card-name">
+                    <span class="type-dot" style="background:#7c3aed;"></span>
+                    Academic
+                </div>
+                <div class="type-card-count">
+                    <asp:Label ID="lblAcademic" runat="server" Text="0" />
+                </div>
+            </div>
+            <div class="type-bar-wrap">
+                <div class="type-bar bar-academic" id="barAcademic" style="width:0%"></div>
+            </div>
+        </div>
+
     </div>
 
     <!-- QUICK ACTIONS -->
@@ -245,15 +377,13 @@
         </div>
     </div>
 
-    <!-- BOTTOM GRID: Recent + Type Breakdown -->
+    <!-- BOTTOM GRID: Recent Certificates (full width) -->
     <div class="row g-3">
-
-        <!-- Recent Certificates -->
-        <div class="col-lg-8">
+        <div class="col-12">
             <div class="section-card">
                 <div class="section-header">
                     <h3><i class="fas fa-clock me-2" style="color:#c9a84c; font-size:.9rem;"></i>Recent Certificates</h3>
-                    <a href="AllCertificates.aspx" style="font-size:.8rem; color:#c9a84c; text-decoration:none;">View all →</a>
+                    <a href="AllCertificates.aspx" style="font-size:.8rem; color:#c9a84c; text-decoration:none;">View all &rsaquo;</a>
                 </div>
                 <div class="section-body">
                     <asp:GridView
@@ -285,78 +415,30 @@
                         <EmptyDataTemplate>
                             <div style="padding:30px; text-align:center; color:#6b7280; font-size:.85rem;">
                                 <i class="fas fa-inbox" style="font-size:2rem; opacity:.3; display:block; margin-bottom:10px;"></i>
-                                No certificates yet. <a href="CreateCertificate.aspx" style="color:#c9a84c;">Create your first one →</a>
+                                No certificates yet. <a href="CreateCertificate.aspx" style="color:#c9a84c;">Create your first one &rarr;</a>
                             </div>
                         </EmptyDataTemplate>
                     </asp:GridView>
                 </div>
             </div>
         </div>
-
-        <!-- Type Breakdown -->
-        <div class="col-lg-4">
-            <div class="section-card" style="height:100%;">
-                <div class="section-header">
-                    <h3><i class="fas fa-chart-bar me-2" style="color:#c9a84c; font-size:.9rem;"></i>By Type</h3>
-                </div>
-                <div class="section-body" style="padding:22px;">
-                    <div class="type-row">
-                        <div class="type-row-label">Participation</div>
-                        <div class="type-bar-wrap">
-                            <div class="type-bar bar-participation" id="barParticipation" style="width:0%"></div>
-                        </div>
-                        <div class="type-row-count"><asp:Label ID="lblBarParticipation" runat="server" Text="0" /></div>
-                    </div>
-                    <div class="type-row">
-                        <div class="type-row-label">Achievement</div>
-                        <div class="type-bar-wrap">
-                            <div class="type-bar bar-achievement" id="barAchievement" style="width:0%"></div>
-                        </div>
-                        <div class="type-row-count"><asp:Label ID="lblBarAchievement" runat="server" Text="0" /></div>
-                    </div>
-                    <div class="type-row">
-                        <div class="type-row-label">Academic</div>
-                        <div class="type-bar-wrap">
-                            <div class="type-bar bar-academic" id="barAcademic" style="width:0%"></div>
-                        </div>
-                        <div class="type-row-count"><asp:Label ID="lblBarAcademic" runat="server" Text="0" /></div>
-                    </div>
-                    <div class="type-row">
-                        <div class="type-row-label">Completion</div>
-                        <div class="type-bar-wrap">
-                            <div class="type-bar bar-completion" id="barCompletion" style="width:0%"></div>
-                        </div>
-                        <div class="type-row-count"><asp:Label ID="lblBarCompletion" runat="server" Text="0" /></div>
-                    </div>
-
-                    <hr style="margin:20px 0; border-color:rgba(15,32,68,.07);" />
-
-                    <div style="font-size:.78rem; color:#6b7280;">
-                        <i class="fas fa-info-circle me-1"></i>
-                        Click a type in the sidebar to filter certificates.
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
 </asp:Content>
 
 <asp:Content ID="ScriptContent" ContentPlaceHolderID="ScriptContent" runat="server">
 <script>
-    // Animate type bars on load
     window.addEventListener('load', function () {
         var total = parseInt('<%= TotalCount %>') || 1;
-        var types = {
+        var bars = {
             barParticipation: parseInt('<%= ParticipationCount %>') || 0,
+            barCompletion:    parseInt('<%= CompletionCount %>')    || 0,
             barAchievement:   parseInt('<%= AchievementCount %>')   || 0,
-            barAcademic:      parseInt('<%= AcademicCount %>')      || 0,
-            barCompletion:    parseInt('<%= CompletionCount %>') || 0
+            barAcademic:      parseInt('<%= AcademicCount %>') || 0
         };
-        Object.keys(types).forEach(function (id) {
+        Object.keys(bars).forEach(function (id) {
             var el = document.getElementById(id);
-            if (el) el.style.width = Math.round((types[id] / total) * 100) + '%';
+            if (el) el.style.width = Math.round((bars[id] / total) * 100) + '%';
         });
     });
 </script>

@@ -12,18 +12,26 @@ namespace CertifyApp
     {
         private CertificateData data = new CertificateData();
 
-        // Preview row model
+        // ── PREVIEW ROW MODEL ─────────────────────────────────────────────────────────
+        // Matches the new CSV format:
+        // ID, Certificate Title, Student Name, Email Address,
+        // Issue Date, Workshop/Event Name, Event Date, Total Hour
+
         public class PreviewRow
         {
             public int Row { get; set; }
-            public string PersonName { get; set; }
-            public string StudentEmail { get; set; }
-            public string WorkshopName { get; set; }
-            public string IssueDate { get; set; }
-            public string StudentBatch { get; set; }
-            public string Status { get; set; }  // "Valid" or "Invalid"
-            public string Notes { get; set; }  // error detail
+            public string CertificateTitle { get; set; }   // per-row title from CSV
+            public string PersonName { get; set; }   // "Student Name"
+            public string EmailAddress { get; set; }   // "Email Address"
+            public string IssueDate { get; set; }   // "Issue Date"
+            public string WorkshopName { get; set; }   // "Workshop/Event Name"
+            public string EventDate { get; set; }   // "Event Date" (optional)
+            public string TotalHour { get; set; }   // "Total Hour" (optional)
+            public string Status { get; set; }   // "Valid" or "Invalid"
+            public string Notes { get; set; }   // error details
         }
+
+        // ── PAGE LOAD ────────────────────────────────────────────────────────────────
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -37,9 +45,15 @@ namespace CertifyApp
             Response.Clear();
             Response.ContentType = "text/csv";
             Response.AddHeader("Content-Disposition", "attachment; filename=bulk_certificate_template.csv");
-            Response.Write("PersonName,StudentEmail,WorkshopName,IssueDate,StudentBatch\r\n");
-            Response.Write("John Doe,john@example.com,Sci-Research Workshop,2025-07-15,2024-2025\r\n");
-            Response.Write("Jane Smith,jane@example.com,DevOps Bootcamp,2025-07-15,\r\n");
+
+            // Header row — must match exactly what the parser expects
+            Response.Write("ID,Certificate Title,Student Name,Email Address,Issue Date,Workshop/Event Name,Event Date,Total Hour\r\n");
+
+            // Sample rows
+            Response.Write("1,Certificate of Participation,John Doe,john@example.com,8/2/2026,Project Management,1/5/2025,30\r\n");
+            Response.Write("2,Certificate of Completion,Jane Smith,jane@example.com,8/2/2026,DevOps Bootcamp,,20\r\n");
+            Response.Write("3,Certificate of Achievement,Ram Sharma,ram@example.com,8/2/2026,Web Development,,\r\n");
+
             Response.End();
         }
 
@@ -60,9 +74,8 @@ namespace CertifyApp
                 if (rows == null || rows.Count == 0)
                 { ShowError("The CSV file appears to be empty or has no data rows."); return; }
 
-                // Store parsed rows in session for the generate step
+                // Store in session for the generate step
                 Session["BulkRows"] = rows;
-                Session["BulkTitle"] = txtBulkTitle.Text.Trim();
                 Session["BulkDirector"] = txtBulkDirector.Text.Trim();
                 Session["BulkDirTitle"] = txtBulkDirectorTitle.Text.Trim();
                 Session["BulkCertType"] = ddlCertType.SelectedValue;
@@ -92,13 +105,13 @@ namespace CertifyApp
                 var row = (PreviewRow)e.Row.DataItem;
                 e.Row.CssClass = row.Status == "Valid" ? "row-valid" : "row-invalid";
 
-                // Style the Status cell
-                int statusCell = 6;
+                // Status column is index 8 (0-based)
+                int statusCell = 8;
                 if (e.Row.Cells.Count > statusCell)
                 {
                     string badge = row.Status == "Valid"
-                        ? "<span class='badge-valid'>✓ Valid</span>"
-                        : "<span class='badge-invalid'>✗ Invalid</span>";
+                        ? "<span class='badge-valid'>&#10003; Valid</span>"
+                        : "<span class='badge-invalid'>&#10007; Invalid</span>";
                     e.Row.Cells[statusCell].Text = badge;
                 }
             }
@@ -117,28 +130,37 @@ namespace CertifyApp
             var rows = Session["BulkRows"] as List<PreviewRow>;
             if (rows == null) { ShowError("Session expired. Please re-upload the file."); return; }
 
-            string certTitle = Session["BulkTitle"]?.ToString() ?? "Certificate of Participation";
             string directorName = Session["BulkDirector"]?.ToString() ?? "";
             string directorTitle = Session["BulkDirTitle"]?.ToString() ?? "Director";
             string certType = Session["BulkCertType"]?.ToString() ?? "Participation";
 
             var toInsert = new List<Certificate>();
+
             foreach (var row in rows)
             {
                 if (row.Status != "Valid") continue;
 
+                // Parse optional fields safely
+                DateTime? eventDate = null;
+                if (!string.IsNullOrEmpty(row.EventDate) && DateTime.TryParse(row.EventDate, out DateTime ed))
+                    eventDate = ed;
+
+                int? totalHours = null;
+                if (!string.IsNullOrEmpty(row.TotalHour) && int.TryParse(row.TotalHour, out int th))
+                    totalHours = th;
+
                 toInsert.Add(new Certificate
                 {
-                    CertificateTitle = certTitle,
+                    CertificateTitle = row.CertificateTitle,   // per-row title from CSV
                     PersonName = row.PersonName,
-                    StudentEmail = row.StudentEmail,
+                    StudentEmail = row.EmailAddress,
                     WorkshopName = row.WorkshopName,
                     IssueDate = DateTime.Parse(row.IssueDate),
-                    StudentBatch = row.StudentBatch,
+                    WorkshopDate = eventDate,
+                    TotalHours = totalHours,
                     DirectorName = directorName,
                     DirectorTitle = directorTitle,
                     CertificateType = certType,
-                    TotalHours = 12
                 });
             }
 
@@ -152,7 +174,7 @@ namespace CertifyApp
                 pnlPreview.Visible = false;
                 pnlUpload.Visible = true;
                 ShowSuccess($"<strong>{ids.Count} certificates</strong> generated successfully! " +
-                            $"<a href='AllCertificates.aspx' style='color:#0f2044; font-weight:600;'>View All Certificates →</a>");
+                            $"<a href='AllCertificates.aspx' style='color:#0f2044; font-weight:600;'>View All Certificates &rarr;</a>");
             }
             catch (Exception ex)
             {
@@ -171,16 +193,22 @@ namespace CertifyApp
                 string headerLine = reader.ReadLine();
                 if (headerLine == null) return rows;
 
-                // Map column positions from header
                 string[] headers = SplitCsvLine(headerLine);
-                int colName = IndexOf(headers, "PersonName");
-                int colEmail = IndexOf(headers, "StudentEmail");
-                int colEvent = IndexOf(headers, "WorkshopName");
-                int colDate = IndexOf(headers, "IssueDate");
-                int colBatch = IndexOf(headers, "StudentBatch");
 
+                // Map header names to column indexes (case-insensitive)
+                int colId = IndexOf(headers, "ID");
+                int colTitle = IndexOf(headers, "Certificate Title");
+                int colName = IndexOf(headers, "Student Name");
+                int colEmail = IndexOf(headers, "Email Address");
+                int colDate = IndexOf(headers, "Issue Date");
+                int colEvent = IndexOf(headers, "Workshop/Event Name");
+                int colEvtDt = IndexOf(headers, "Event Date");
+                int colHours = IndexOf(headers, "Total Hour");
+
+                // Minimum required columns
                 if (colName < 0 || colDate < 0)
-                    throw new Exception("CSV must have at least 'PersonName' and 'IssueDate' columns.");
+                    throw new Exception("CSV must have at least 'Student Name' and 'Issue Date' columns. " +
+                                        "Please download the template and use the correct column names.");
 
                 int rowNum = 0;
                 string line;
@@ -191,32 +219,42 @@ namespace CertifyApp
 
                     string[] cells = SplitCsvLine(line);
 
+                    string certTitle = GetCell(cells, colTitle);
                     string name = GetCell(cells, colName);
                     string email = GetCell(cells, colEmail);
-                    string evt = GetCell(cells, colEvent);
                     string date = GetCell(cells, colDate);
-                    string batch = GetCell(cells, colBatch);
+                    string eventName = GetCell(cells, colEvent);
+                    string eventDate = GetCell(cells, colEvtDt);
+                    string totalHour = GetCell(cells, colHours);
 
                     string status = "Valid";
                     string notes = "";
 
+                    // Validation
                     if (string.IsNullOrEmpty(name))
-                    { status = "Invalid"; notes += "Missing PersonName. "; }
-
-                    if (!string.IsNullOrEmpty(date) && !DateTime.TryParse(date, out _))
-                    { status = "Invalid"; notes += "Invalid IssueDate (use yyyy-MM-dd). "; }
+                    { status = "Invalid"; notes += "Missing Student Name. "; }
 
                     if (string.IsNullOrEmpty(date))
-                    { status = "Invalid"; notes += "Missing IssueDate. "; }
+                    { status = "Invalid"; notes += "Missing Issue Date. "; }
+                    else if (!DateTime.TryParse(date, out _))
+                    { status = "Invalid"; notes += "Invalid Issue Date format (use M/d/yyyy). "; }
+
+                    if (!string.IsNullOrEmpty(eventDate) && !DateTime.TryParse(eventDate, out _))
+                    { status = "Invalid"; notes += "Invalid Event Date format (use M/d/yyyy). "; }
+
+                    if (!string.IsNullOrEmpty(totalHour) && !int.TryParse(totalHour, out _))
+                    { status = "Invalid"; notes += "Total Hour must be a number. "; }
 
                     rows.Add(new PreviewRow
                     {
                         Row = rowNum,
+                        CertificateTitle = certTitle,
                         PersonName = name,
-                        StudentEmail = email,
-                        WorkshopName = evt,
+                        EmailAddress = email,
                         IssueDate = date,
-                        StudentBatch = batch,
+                        WorkshopName = eventName,
+                        EventDate = eventDate,
+                        TotalHour = totalHour,
                         Status = status,
                         Notes = notes.Trim()
                     });
@@ -225,9 +263,10 @@ namespace CertifyApp
             return rows;
         }
 
+        // ── CSV HELPERS ───────────────────────────────────────────────────────────────
+
         private string[] SplitCsvLine(string line)
         {
-            // Simple CSV split (handles quoted fields)
             var result = new List<string>();
             bool inQuotes = false;
             var current = new StringBuilder();
@@ -255,7 +294,7 @@ namespace CertifyApp
             return cells[index].Trim().Trim('"');
         }
 
-        // ── HELPERS ──────────────────────────────────────────────────────────────────
+        // ── UI HELPERS ────────────────────────────────────────────────────────────────
 
         private void ShowSuccess(string msg) { pnlSuccess.Visible = true; lblSuccess.Text = msg; pnlError.Visible = false; }
         private void ShowError(string msg) { pnlError.Visible = true; lblError.Text = msg; pnlSuccess.Visible = false; }
